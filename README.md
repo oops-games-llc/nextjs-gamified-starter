@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Conversion.Business SaaS Starter
+
+A premium, production-ready Next.js boilerplate built for developers who want to skip the setup and start building.
+
+## Features
+- **Next.js 14 App Router** with TypeScript
+- **TailwindCSS** featuring a premium dark-mode, glassmorphic aesthetic
+- **Firebase Authentication** (Email & Password)
+- **Gamified Bot Protection** out of the box via `react-gamified-captcha`
 
 ## Getting Started
 
-First, run the development server:
-
+1. Clone the repository and install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Run the development server:
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Going to Production
 
-## Learn More
+By default, the template runs in a **Graceful Fallback Mode**. You can test the UI, the gamified CAPTCHA, and the mock dashboard instantly without configuring any database keys. 
 
-To learn more about Next.js, take a look at the following resources:
+To take your SaaS to production, you need to configure two things:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1. The Database (Firebase)
+Create a `.env.local` file in the root directory and add your Firebase project credentials. As soon as these keys are detected, the app automatically switches from Mock Mode to True Authentication.
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+NEXT_PUBLIC_CAPTCHA_SITE_KEY=your_conversion_business_site_key
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. The Gamified CAPTCHA
+The registration page uses a fallback demo site key to demonstrate the gamified bot protection. 
+To protect your production application from automated spam and receive valid HMAC signatures, you must generate a free production API key at [Conversion.Business](https://conversion.business) and place it in your `.env.local` file as `NEXT_PUBLIC_CAPTCHA_SITE_KEY`.

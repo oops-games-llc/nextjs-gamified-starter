@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversion.Business | Enterprise Engagement Platform</title>
+    <meta name="description" content="Embeddable HTML5 micro-experiences for SaaS Waiting Rooms, Gamified CAPTCHAs, and Blog Engagement." />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800&display=swap');
+      
+      :root {
+          --bg-base: #050505;
+          --bg-surface: #0f0f11;
+          --bg-card: #161618;
+          --text-primary: #ffffff;
+          --text-secondary: #a1a1aa;
+          --accent-primary: #3b82f6;
+          --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+          --border-color: rgba(255, 255, 255, 0.08);
+          --success: #10b981;
+          --font-sans: 'Inter', sans-serif;
+          --font-display: 'Outfit', sans-serif;
+      }
+      
+      * { box-sizing: border-box; }
+      
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        background-color: var(--bg-base);
+        color: var(--text-primary);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      
+      /* Navbar */
+      
+      .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 40px;
+          border-bottom: 1px solid var(--border-color);
+          background: rgba(5, 5, 5, 0.8);
+          backdrop-filter: blur(12px);
+          position: sticky;
+          top: 0;
+          z-index: 100;
+      }
+      
+      .navbar-brand {
+          font-family: var(--font-display);
+          font-weight: 800;
+          font-size: 1.5rem;
+          letter-spacing: -0.5px;
+          background: var(--text-primary);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+      }
+      
+      .navbar-brand .dot {
+          color: var(--accent-primary);
+      }
+      
+      .navbar-contact {
+          font-weight: 500;
+          color: var(--text-secondary);
+          text-decoration: none;
+          transition: color 0.2s;
+          font-size: 0.95rem;
+      }
+      
+      .navbar-contact:hover {
+          color: var(--text-primary);
+      }
+      
+      /* Hero */
+      
+      .hero {
+          text-align: center;
+          padding: 80px 20px 60px;
+          max-width: 900px;
+          margin: 0 auto;
+          position: relative;
+      }
+      
+      .hero::before {
+          content: '';
+          position: absolute;
+          top: -100px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(0,0,0,0) 70%);
+          z-index: -1;
+          pointer-events: none;
+      }
+      
+      .badge {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 20px;
+          background: rgba(59, 130, 246, 0.1);
+          border: 1px solid rgba(59, 130, 246, 0.2);
+          color: #60a5fa;
+          font-size: 0.85rem;
+          font-weight: 600;
+          margin-bottom: 24px;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+      }
+      
+      .hero h1 { 
+          font-family: var(--font-display); 
+          font-size: 4rem; 
+          font-weight: 800;
+          line-height: 1.1;
+          margin: 0 0 24px 0;
+          letter-spacing: -1.5px;
+      }
+      
+      .hero h1 span {
+          background: var(--accent-gradient);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+      }
+      
+      .hero p { 
+          font-size: 1.25rem; 
+          color: var(--text-secondary); 
+          font-weight: 400; 
+          max-width: 650px;
+          margin: 0 auto;
+      }
+      
+      /* Main Content Container */
+      
+      .dashboard {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px 80px;
+      }
+      
+      /* Tabs */
+      
+      .tabs {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          margin-bottom: 40px;
+          background: var(--bg-surface);
+          padding: 8px;
+          border-radius: 16px;
+          border: 1px solid var(--border-color);
+          width: fit-content;
+          margin-left: auto;
+          margin-right: auto;
+      }
+      
+      .tab {
+          padding: 12px 24px;
+          border-radius: 10px;
+          cursor: pointer;
+          font-weight: 500;
+          color: var(--text-secondary);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          font-size: 0.95rem;
+      }
+      
+      .tab:hover {
+          color: var(--text-primary);
+      }
+      
+      .tab.active {
+          background: var(--bg-card);
+          color: var(--text-primary);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+          border: 1px solid var(--border-color);
+      }
+      
+      .tab-content {
+          display: none;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: opacity 0.4s ease, transform 0.4s ease;
+      }
+      
+      .tab-content.active {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+          opacity: 1;
+          transform: translateY(0);
+      }
+      
+      /* Control Panel */
+      
+      .control-panel {
+          background: var(--bg-surface);
+          border: 1px solid var(--border-color);
+          border-radius: 24px;
+          padding: 40px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+          position: relative;
+          overflow: hidden;
+      }
+      
+      .control-panel::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--accent-gradient);
+          opacity: 0.5;
+      }
+      
+      .panel-header h2 {
+          font-family: var(--font-display);
+          font-size: 2rem;
+          margin: 0 0 10px 0;
+      }
+      
+      .panel-header p {
+          color: var(--text-secondary);
+          margin: 0 0 30px 0;
+      }
+      
+      /* Form Elements */
+      
+      .form-group {
+          margin-bottom: 24px;
+      }
+      
+      label {
+          display: block;
+          font-weight: 500;
+          margin-bottom: 8px;
+          color: var(--text-primary);
+          font-size: 0.95rem;
+      }
+      
+      .input-wrapper {
+          position: relative;
+      }
+      
+      input[type="text"], select {
+          width: 100%;
+          padding: 14px 16px;
+          border-radius: 12px;
+          background: var(--bg-base);
+          border: 1px solid var(--border-color);
+          color: var(--text-primary);
+          font-size: 1rem;
+          font-family: var(--font-sans);
+          transition: all 0.2s;
+          appearance: none;
+      }
+      
+      input[type="text"]:focus, select:focus {
+          outline: none;
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+      
+      select {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a1a1aa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 16px center;
+          background-size: 16px;
+      }
+      
+      .code-container {
+          position: relative;
+          margin-bottom: 24px;
+      }
+      
+      textarea {
+          width: 100%;
+          height: 180px;
+          padding: 20px;
+          border-radius: 12px;
+          background: #0a0a0a;
+          border: 1px solid var(--border-color);
+          color: #e2e8f0;
+          font-family: 'JetBrains Mono', monospace, Consolas;
+          font-size: 0.85rem;
+          line-height: 1.5;
+          resize: none;
+      }
+      
+      .copy-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: rgba(255,255,255,0.1);
+          color: var(--text-primary);
+          border: 1px solid rgba(255,255,255,0.1);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          backdrop-filter: blur(4px);
+      }
+      
+      .copy-btn:hover {
+          background: rgba(255,255,255,0.15);
+      }
+      
+      /* Perks */
+      
+      .perks-list {
+          margin-top: 30px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+      }
+      
+      .perk-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+          background: rgba(255,255,255,0.02);
+          padding: 16px;
+          border-radius: 12px;
+          border: 1px solid rgba(255,255,255,0.03);
+      }
+      
+      .perk-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background: rgba(59, 130, 246, 0.1);
+          color: var(--accent-primary);
+          border-radius: 10px;
+          font-size: 1.2rem;
+          flex-shrink: 0;
+      }
+      
+      .perk-text h4 {
+          margin: 0 0 4px 0;
+          font-size: 0.95rem;
+          color: var(--text-primary);
+      }
+      
+      .perk-text p {
+          margin: 0;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+      }
+      
+      /* Preview Panel */
+      
+      .preview-panel {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+      }
+      
+      .preview-label {
+          position: absolute;
+          top: -20px;
+          background: var(--bg-surface);
+          border: 1px solid var(--border-color);
+          padding: 6px 16px;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          color: var(--text-secondary);
+          z-index: 10;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      }
+      
+      .device-mockup {
+          width: 375px;
+          height: 667px;
+          border-radius: 32px;
+          overflow: hidden;
+          box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
+          border: 12px solid #1a1a1a;
+          background: #ffffff;
+          position: relative;
+      }
+      
+      iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+          background: transparent;
+      }
+      
+      /* Widget Previews */
+      
+      .widget-demo-container {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f8fafc;
+          color: #0f172a;
+          padding: 20px;
+      }
+      
+      .captcha-demo {
+          width: 100%;
+          max-width: 320px;
+          background: white;
+          border-radius: 16px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+          padding: 24px;
+          border: 1px solid #e2e8f0;
+      }
+      
+      .form-title {
+          font-weight: 700;
+          font-size: 1.25rem;
+          margin: 0 0 20px 0;
+          font-family: var(--font-display);
+      }
+      
+      .demo-input {
+          width: 100%;
+          padding: 12px;
+          border-radius: 8px;
+          border: 1px solid #cbd5e1;
+          margin-bottom: 16px;
+          font-family: var(--font-sans);
+          background: #f8fafc;
+      }
+      
+      .demo-btn {
+          width: 100%;
+          padding: 12px;
+          border-radius: 8px;
+          border: none;
+          background: #cbd5e1;
+          color: white;
+          font-weight: 600;
+          cursor: not-allowed;
+          transition: all 0.3s;
+          font-family: var(--font-sans);
+      }
+      
+      .demo-btn.active {
+          background: var(--accent-primary);
+          cursor: pointer;
+      }
+      
+      /* Footer */
+      
+      .footer {
+          border-top: 1px solid var(--border-color);
+          padding: 60px 20px;
+          text-align: center;
+          margin-top: 40px;
+      }
+      
+      .footer-cta {
+          margin-bottom: 40px;
+      }
+      
+      .footer-cta h3 {
+          font-family: var(--font-display);
+          font-size: 1.5rem;
+          margin: 0 0 10px 0;
+      }
+      
+      .footer-cta p {
+          color: var(--text-secondary);
+      }
+      
+      .primary-btn {
+          display: inline-block;
+          background: var(--text-primary);
+          color: var(--bg-base);
+          padding: 12px 28px;
+          border-radius: 8px;
+          font-weight: 600;
+          text-decoration: none;
+          margin-top: 16px;
+          transition: transform 0.2s;
+      }
+      
+      .primary-btn:hover {
+          transform: translateY(-2px);
+      }
+      
+      @media (max-width: 968px) {
+          .tab-content.active {
+              grid-template-columns: 1fr;
+          }
+          .hero h1 {
+              font-size: 3rem;
+          }
+          .device-mockup {
+              margin-top: 40px;
+          }
+      }
+      
+      @media (max-width: 600px) {
+          .navbar {
+              padding: 16px 20px;
+          }
+          .navbar-brand {
+              font-size: 1.25rem;
+          }
+          .hero {
+              padding: 50px 20px 40px;
+          }
+          .hero h1 {
+              font-size: 2.25rem;
+          }
+          .hero p {
+              font-size: 1.05rem;
+          }
+          .dashboard {
+              padding: 0 16px 60px;
+          }
+          .tabs {
+              flex-wrap: wrap;
+              padding: 4px;
+              border-radius: 12px;
+          }
+          .tab {
+              padding: 10px 16px;
+              font-size: 0.9rem;
+              flex: 1 1 auto;
+              text-align: center;
+          }
+          .control-panel {
+              padding: 24px 20px;
+              border-radius: 20px;
+          }
+          .panel-header h2 {
+              font-size: 1.5rem;
+          }
+          .device-mockup {
+              width: 100%;
+              max-width: 375px;
+              height: auto;
+              aspect-ratio: 375 / 667;
+              border-width: 8px;
+              border-radius: 24px;
+          }
+          .captcha-demo {
+              padding: 16px;
+          }
+          #captcha-iframe-wrapper {
+              height: 300px;
+          }
+      }
+    </style>
+  <script type="module" crossorigin src="/assets/index-BzYhdeAt.js"></script>
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="navbar-brand">
+            Conversion<span class="dot">.</span>Business
+        </div>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <a href="mailto:katiep@oops-games.com" class="navbar-contact">Contact Sales</a>
+            <a href="/portal.html" class="primary-btn" style="margin: 0; padding: 8px 16px; font-size: 0.9rem;">Developer Portal</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="badge">Production Ready Infrastructure</div>
+        <h1>Stop Bots.<br/><span>Delight Humans.</span></h1>
+        <p>The enterprise-grade, privacy-first alternative to reCAPTCHA. Turn mandatory security friction into micro-joy while maintaining strict ADA / WCAG compliance and stopping automated abuse.</p>
+        <div style="margin-top: 24px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="/demo.html" class="primary-btn" style="background: var(--accent-primary); margin: 0;">See Live Demo</a>
+            <a href="/whitepaper.html" class="primary-btn" style="background: transparent; border: 2px solid var(--text-primary); color: var(--text-primary); margin: 0;">Read Security White Paper</a>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <!-- Gamified CAPTCHA Interface -->
+        <div id="tab-captcha" class="tab-content active">
+            <div class="control-panel">
+                <div class="panel-header">
+                    <h2>Frictionless Validation</h2>
+                    <p>Replace heavy, frustrating reCAPTCHA flows with delightful 10-second HTML5 micro-games.</p>
+                    <div style="display: none;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="captcha-game-select">1. Select Experience</label>
+                    <div class="input-wrapper">
+                        <select id="captcha-game-select" onchange="updateCaptchaCode()">
+                            <option value="https://conversion.business/sunny-day-maze/">Sunny Day Maze</option>
+                            <option value="https://conversion.business/smack-that-donkey/">Smack That Donkey</option>
+                            <option value="https://conversion.business/danger-point/">Danger Point</option>
+                            <option value="https://conversion.business/trend-catcher/">Trend Catcher</option>
+                            <option value="https://conversion.business/turtle-stacker/">Turtle Stacker</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="perks-list">
+                    <div class="perk-item">
+                        <div class="perk-icon">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <div class="perk-text">
+                            <h4>100% WCAG 2.1 AA Compliant</h4>
+                            <p>Accessible to all. Screen-reader friendly keyboard fallbacks ensure no human is ever blocked by our verification.</p>
+                        </div>
+                    </div>
+                    <div class="perk-item">
+                        <div class="perk-icon">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </div>
+                        <div class="perk-text">
+                            <h4>Privacy-First Validation</h4>
+                            <p>We validate game state logic and backend cryptography. No cross-site tracking cookies. Zero behavioral surveillance.</p>
+                        </div>
+                    </div>
+                    <div class="perk-item">
+                        <div class="perk-icon">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <div class="perk-text">
+                            <h4>Cryptographic Handshakes</h4>
+                            <p>Industry-standard HMAC SHA-256 signed payloads ensure bulletproof server-to-server security.</p>
+                        </div>
+                    </div>
+                    <div class="perk-item">
+                        <div class="perk-icon">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <div class="perk-text">
+                            <h4>Dynamic Game Randomization</h4>
+                            <p>Defeat targeted machine-learning bots by deploying unpredictable, multi-game challenge rotations on every page load.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <div class="preview-label">Form Implementation</div>
+                <div class="device-mockup">
+                    <div class="widget-demo-container">
+                        <div class="captcha-demo">
+                            <h3 class="form-title">Create Account</h3>
+                            <input type="email" placeholder="work@email.com" class="demo-input">
+                            
+                            <div id="captcha-iframe-wrapper" style="width: 100%; height: 350px; border-radius: 12px; overflow: hidden; border: 1px solid #cbd5e1; margin-bottom: 16px;">
+                                <iframe id="preview-frame-captcha" src="about:blank"></iframe>
+                            </div>
+                            
+                            <div id="captcha-success-msg" style="display: none; align-items: center; justify-content: center; gap: 8px; color: #10b981; font-weight: 600; margin-bottom: 16px; padding: 12px; background: #ecfdf5; border-radius: 8px; border: 1px solid #a7f3d0;">
+                                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Verification Complete
+                            </div>
+                            
+                            <button id="captcha-submit-btn" class="demo-btn">Complete Setup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-cta">
+            <h3>Ready to implement?</h3>
+            <p>Start for free with 1,000 successful solves per month. Pay only for verified human interactions.</p>
+            <a href="/portal.html" class="primary-btn">Developer Portal</a>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px;">&copy; 2026 oops-games llc. All rights reserved.</p>
+        <div>
+            <a href="/legal.html#terms" target="_blank" style="color: var(--text-secondary); text-decoration: none; margin: 0 10px;">Terms of Service</a>
+            <a href="/legal.html#privacy" target="_blank" style="color: var(--text-secondary); text-decoration: none; margin: 0 10px;">Privacy Policy</a>
+            <a href="/accessibility.html" target="_blank" style="color: var(--text-secondary); text-decoration: none; margin: 0 10px;">Accessibility</a>
+        </div>
+    </footer>
+
+    <!-- Waiting Room SDK for live demo (dynamically loaded) -->
+
+    <script>
+        const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+
+
+        // Copy functionality
+        function copyCode(elementId, btn) {
+            const el = document.getElementById(elementId);
+            el.select();
+            document.execCommand('copy');
+            
+            const originalText = btn.innerText;
+            btn.innerText = "✓ Copied";
+            btn.style.color = "#10b981";
+            btn.style.borderColor = "#10b981";
+            
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.color = "";
+                btn.style.borderColor = "";
+            }, 2000);
+        }
+
+        // CAPTCHA Logic
+        function updateCaptchaCode() {
+            const clientIdEl = document.getElementById('client-id-captcha');
+            const clientId = clientIdEl ? clientIdEl.value : 'acme_corp';
+            const gameSelectElement = document.getElementById('captcha-game-select');
+            const gameUrl = gameSelectElement ? gameSelectElement.value : 'https://conversion.business/sunny-day-maze/';
+            
+            // The embed code is now only available in the Developer Portal.
+            const embedCodeEl = document.getElementById('embed-code-captcha');
+            if (embedCodeEl) {
+                embedCodeEl.value = `<!-- 1. FRONTEND: Widget Mount -->\n<div style="width: 100%; max-width: 400px; height: 400px;">\n  <iframe src="${gameUrl}?mode=captcha&clientId=${clientId}" style="width:100%; height:100%; border:none; border-radius:12px;"></iframe>\n</div>\n\n<!-- 2. FRONTEND: Event Listener -->\n<script>\n  window.addEventListener('message', async (event) => {\n    if (event.data && event.data.type === 'oops_captcha_solved') {\n      // Send payload to your secure backend\n      const response = await fetch('/api/verify-captcha', {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ payload: event.data.payload })\n      });\n      if (response.ok) {\n        console.log("Verified securely!");\n        enableSubmitButton();\n      }\n    }\n  });\n<\/script>\n\n/* 3. BACKEND (Node.js Example) */\n/*\nconst crypto = require('crypto');\napp.post('/api/verify-captcha', (req, res) => {\n  const rawPayload = req.body.payload;\n  const parsed = JSON.parse(rawPayload);\n  \n  // Check timestamp to prevent replay attacks\n  if (Date.now() - parsed.timestamp > 5 * 60 * 1000) return res.status(403).send('Expired');\n\n  // Generate HMAC\n  const hmac = crypto.createHmac('sha256', process.env.OOPS_SECRET_KEY);\n  hmac.update(rawPayload);\n  const signature = hmac.digest('hex');\n\n  // Store signature in session/DB to verify final form submission\n  res.json({ success: true, signature });\n});\n*/`;
+            }
+            
+            const iframe = document.getElementById('preview-frame-captcha');
+            const iframeWrapper = document.getElementById('captcha-iframe-wrapper');
+            const successMsg = document.getElementById('captcha-success-msg');
+            const submitBtn = document.getElementById('captcha-submit-btn');
+
+            if (iframeWrapper) iframeWrapper.style.display = 'block';
+            if (successMsg) successMsg.style.display = 'none';
+            if (submitBtn) {
+                submitBtn.classList.remove('active');
+            }
+            // Extract the path from the absolute URL for local testing of the preview
+            const localPreviewPath = new URL(gameUrl).pathname;
+            const previewClientId = 'demo_tenant'; // ALWAYS use demo_tenant for the live preview to prevent 401s for unregistered IDs
+            if (isLocalHost && localPreviewPath.includes('smack-that-donkey')) {
+                iframe.src = `http://localhost:5174/?mode=captcha&clientId=${previewClientId}&_t=${Date.now()}`;
+            } else if (isLocalHost && localPreviewPath.includes('sunny-day-maze')) {
+                iframe.src = `http://localhost:5175/?mode=captcha&clientId=${previewClientId}&_t=${Date.now()}`;
+            } else {
+                iframe.src = `${window.location.origin}${localPreviewPath}?mode=captcha&clientId=${previewClientId}&_t=${Date.now()}`;
+            }
+        }
+        
+        window.addEventListener('message', async (event) => {
+            if (event.data && event.data.type === 'oops_captcha_solved') {
+                console.log("[Demo Frontend] Received raw telemetry payload:", event.data.payload);
+                
+                let parsedPayload = {};
+                try {
+                    parsedPayload = typeof event.data.payload === 'string' ? JSON.parse(event.data.payload) : event.data.payload;
+                } catch(e) {}
+
+                const successMsg = document.getElementById('captcha-success-msg');
+                const submitBtn = document.getElementById('captcha-submit-btn');
+
+                if (parsedPayload.verified === false || parsedPayload.bot === true) {
+                    if (successMsg) {
+                        successMsg.innerHTML = `<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>Verification Failed`;
+                        successMsg.style.color = '#ef4444';
+                        successMsg.style.background = '#fef2f2';
+                        successMsg.style.borderColor = '#fecaca';
+                        successMsg.style.display = 'flex';
+                    }
+                    if (submitBtn) {
+                        submitBtn.classList.remove('active');
+                    }
+                    return; // Do not proceed to verify
+                }
+
+                let signatureHex = "signature_disabled_locally";
+                
+                try {
+                    // Try hitting the V2 Firebase Function
+                    const response = await fetch('/api/verify-captcha', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ payload: event.data.payload })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        signatureHex = data.signature;
+                    } else {
+                        throw new Error('V2 API not running locally');
+                    }
+                } catch (e) {
+                    // Fallback to local mock if V2 API is not running locally (e.g., using Vite dev server)
+                    if (window.crypto && window.crypto.subtle) {
+                        const encoder = new TextEncoder();
+                        const key = await window.crypto.subtle.importKey(
+                            'raw', encoder.encode('OOPS_DEMO_SECRET_KEY'), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+                        );
+                        const sigBuf = await window.crypto.subtle.sign('HMAC', key, encoder.encode(event.data.payload));
+                        signatureHex = Array.from(new Uint8Array(sigBuf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+                    }
+                }
+                
+                console.log("[Demo Backend] Generated HMAC SHA-256 signature:", signatureHex);
+                
+                const iframeWrapper = document.getElementById('captcha-iframe-wrapper');
+                
+                if (document.getElementById('tab-captcha') && document.getElementById('tab-captcha').classList.contains('active')) {
+                    if (successMsg) {
+                        successMsg.innerHTML = `<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Verification Complete`;
+                        successMsg.style.color = '#10b981';
+                        successMsg.style.background = '#ecfdf5';
+                        successMsg.style.borderColor = '#a7f3d0';
+                        successMsg.style.display = 'flex';
+                    }
+                    if (submitBtn) {
+                        submitBtn.classList.add('active');
+                    }
+                }
+            }
+        });
+
+        updateCaptchaCode();
+    </script>
+</body>
+</html>
