@@ -8,19 +8,25 @@ A premium, production-ready Next.js boilerplate built for developers who want to
 - **Firebase Authentication** (Email & Password)
 - **Gamified Bot Protection** out of the box via `react-gamified-captcha`
 
-## Getting Started
+## 🚀 Quick Start
 
-1. Clone the repository and install dependencies:
+1. Clone the boilerplate into a new directory:
+```bash
+git clone https://github.com/oops-games-llc/nextjs-gamified-starter.git my-saas-app
+cd my-saas-app
+```
+
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-2. Run the development server:
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser. You will immediately see in-app **Developer Experience Warnings** guiding you to configure your environment variables.
 
 ## Going to Production
 
