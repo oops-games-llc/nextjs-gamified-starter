@@ -32,6 +32,7 @@ export default function Register() {
   useEffect(() => {
     // Randomize the game once on the client to prevent SSR hydration errors
     const randomGame = SELECTED_GAMES[Math.floor(Math.random() * SELECTED_GAMES.length)] || "https://conversion.business/sunny-day-maze/";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setGameUrl(randomGame);
   }, []);
 
@@ -61,6 +62,7 @@ export default function Register() {
 
       await createUserWithEmailAndPassword(auth, email, password);
       router.push('/dashboard');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message || 'Registration failed');
     } finally {

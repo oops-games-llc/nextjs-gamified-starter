@@ -18,6 +18,7 @@ export const isFirebaseConfigured = () => {
 const app = !getApps().length && isFirebaseConfigured() ? initializeApp(firebaseConfig) : (getApps().length ? getApp() : null);
 
 // If not configured, provide a null auth object so the app doesn't crash on import
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const auth = app ? getAuth(app) : null as any;
 
 export { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged };

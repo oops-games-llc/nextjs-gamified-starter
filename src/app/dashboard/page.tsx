@@ -12,6 +12,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (!isFirebaseConfigured()) {
       // In QA fallback mode, we don't block the dashboard
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(false);
       return;
     }

@@ -27,6 +27,7 @@ export default function Login() {
 
       await signInWithEmailAndPassword(auth, email, password);
       router.push('/dashboard');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message || 'Login failed');
     } finally {
@@ -75,8 +76,8 @@ export default function Login() {
             {loading ? 'Logging In...' : 'Log In'}
           </button>
 
-          <p className="text-center text-sm text-muted mt-4">
-            Don't have an account? <Link href="/register" className="text-primary hover:underline">Sign up</Link>
+          <p className="text-center text-sm text-text-secondary mt-6">
+            Don&apos;t have an account?{' '}<Link href="/register" className="text-primary hover:underline">Sign up</Link>
           </p>
         </form>
       </div>
