@@ -1,6 +1,6 @@
 # Conversion.Business SaaS Starter
 
-A premium, production-ready Next.js boilerplate built for developers who want to skip the setup and start building.
+A premium, production-ready Next.js boilerplate featuring the best alternative to Google reCAPTCHA. Built for developers who want to skip the setup and start building high-conversion authentication flows.
 
 ## Features
 - **Next.js 14 App Router** with TypeScript
