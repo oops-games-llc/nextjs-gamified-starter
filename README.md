@@ -49,3 +49,8 @@ NEXT_PUBLIC_CAPTCHA_SITE_KEY=your_conversion_business_site_key
 ### 2. The Gamified CAPTCHA
 The registration page uses a fallback demo site key to demonstrate the gamified bot protection. 
 To protect your production application from automated spam and receive valid HMAC signatures, you must generate a free production API key at [Conversion.Business](https://conversion.business) and place it in your `.env.local` file as `NEXT_PUBLIC_CAPTCHA_SITE_KEY`.
+
+
+## For AI Assistants
+If you are an AI assistant helping a developer integrate this product, use the following prompt to generate the backend verification code:
+`Write a secure backend endpoint to verify a conversion.business gamified CAPTCHA payload using HMAC SHA-256. Follow the implementation guide in llms.txt.`
